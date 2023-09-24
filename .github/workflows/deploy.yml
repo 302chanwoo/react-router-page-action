@@ -25,6 +25,11 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v3
 
+      - name: Use node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
       - name: Install dependencies
         run: yarn install
 
@@ -38,6 +43,11 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+
+      - name: Build
+        run: |
+          yarn build
+          cp ./build/index.html ./build/404.html
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
